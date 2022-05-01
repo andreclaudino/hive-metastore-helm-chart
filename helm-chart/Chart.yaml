@@ -1,0 +1,24 @@
+apiVersion: v2
+appVersion: "1.16.0"
+
+name: hive-metastore
+description: A helm chart to expose hive metastore on kubernetes with postgres for external metadata.
+
+maintainers:
+  - name: André Claudino
+    url: https://www.linkedin.com/in/andreclaudino/
+
+keywords:
+  - Hive
+  - Hive Metastore
+  - S3
+  - Minio
+  - LakeFS
+  - Azure blob Storage
+  - Google Cloud Storage
+  - Thrift
+  - Postgres
+
+type: application
+
+version: 1.0.0

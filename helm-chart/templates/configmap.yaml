@@ -1,0 +1,93 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-configurations
+  labels:
+    andreclaudino/application: hive-metastore
+    {{- include "helm-chart.labels" $ | trim | nindent 4 }}
+data:
+  metastore-site.xml: |
+    <configuration>
+      <property>
+        <name>datanucleus.autoCreateSchema</name>
+        <value> {{ .Values.autoCreateSchema }} </value>
+      </property>
+      <property>
+        <name>hive.metastore.warehouse.dir</name>
+        <value>{{ .Values.warehouseDir }} </value>
+      </property>
+
+      <!-- Start of Postgres configuration -->
+      <property>
+        <name>javax.jdo.option.ConnectionDriverName</name>
+        <value>org.postgresql.Driver</value>
+      </property>
+      <property>
+        <name>javax.jdo.option.ConnectionURL</name>
+        <value>jdbc:postgresql://{{ .Values.postgres.host }}:{{ .Values.postgres.port }}/{{ .Values.postgres.database }}</value>
+      </property>
+      <property>
+        <name>javax.jdo.option.ConnectionUserName</name>
+        <value>{{ .Values.postgres.username.rawValue }}</value>
+      </property>
+      <property>
+        <name> javax.jdo.option.ConnectionPassword</name>
+        <value>{{ .Values.postgres.password.rawValue }}</value>
+      </property>
+      <!-- End of Postgres configuration -->
+      
+      <!-- Azure configuration -->
+      {{- range $account := $.Values.blobStorages.azureStorageAccounts }}
+      <!-- Account: {{ $account.name }} -->
+      <property>
+        <name>fs.azure.account.auth.type.{{ $account.name }}.blob.core.windows.net</name>
+        <value>SharedKey</value>
+      </property>
+      <property>
+        <name>fs.azure.account.key.{{ $account.name }}.blob.core.windows.net</name>
+        <value>{{ $account.key }}</value>
+      </property>
+
+      <property>
+        <name>fs.azure.account.auth.type.{{ $account.name }}.dfs.core.windows.net</name>
+        <value>SharedKey</value>
+      </property>
+      <property>
+        <name>fs.azure.account.key.{{ $account.name }}.dfs.core.windows.net</name>
+        <value>{{ $account.key }}</value>
+      </property>
+      {{- end }}
+      <!-- end of Azure configuration -->
+
+      <!-- Start of S3 like configuration -->
+      {{if .Values.s3aConfiguration.accessKeyId }}
+      <property>
+        <name>fs.s3a.access.key</name>
+        <value>{{ .Values.s3aConfiguration.accessKeyId }}</value>
+      </property>
+      {{ end }}
+      {{if .Values.s3aConfiguration.secretAccessKey }}
+      <property>
+        <name>fs.s3a.secret.key</name>
+        <value>{{ .Values.s3aConfiguration.secretAccessKey }}</value>
+      </property>
+      {{ end }}
+      {{if .Values.s3aConfiguration.endpoint }}
+      <property>
+        <name>fs.s3a.endpoint</name>
+        <value>{{ .Values.s3aConfiguration.endpoint }}</value>
+      </property>
+      {{ end }}
+      <property>
+        <name>fs.s3a.path.style.access</name>
+        <value>{{ .Values.s3aConfiguration.pathStyleAccess }}</value>
+      </property>
+      <!-- End of of S3 like configuration -->
+
+      {{- range $parameter := .Values.hiveConfigParameters }}
+      <property>
+        <name>{{ $parameter.key }}</name>
+        <value>{{ $parameter.value }}</value>
+      </property>
+      {{- end }}
+    </configuration>
