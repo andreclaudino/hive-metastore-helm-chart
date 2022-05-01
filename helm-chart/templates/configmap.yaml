@@ -60,27 +60,27 @@ data:
       <!-- end of Azure configuration -->
 
       <!-- Start of S3 like configuration -->
-      {{if .Values.s3aConfiguration.accessKeyId }}
+      {{if .Values.blobStorages.s3aConfiguration.accessKeyId }}
       <property>
         <name>fs.s3a.access.key</name>
-        <value>{{ .Values.s3aConfiguration.accessKeyId }}</value>
+        <value>{{ .Values.blobStorages.s3aConfiguration.accessKeyId }}</value>
       </property>
       {{ end }}
-      {{if .Values.s3aConfiguration.secretAccessKey }}
+      {{if .Values.blobStorages.s3aConfiguration.secretAccessKey }}
       <property>
         <name>fs.s3a.secret.key</name>
-        <value>{{ .Values.s3aConfiguration.secretAccessKey }}</value>
+        <value>{{ .Values.blobStorages.s3aConfiguration.secretAccessKey }}</value>
       </property>
       {{ end }}
-      {{if .Values.s3aConfiguration.endpoint }}
+      {{if .Values.blobStorages.s3aConfiguration.endpoint }}
       <property>
         <name>fs.s3a.endpoint</name>
-        <value>{{ .Values.s3aConfiguration.endpoint }}</value>
+        <value>{{ .Values.blobStorages.s3aConfiguration.endpoint }}</value>
       </property>
       {{ end }}
       <property>
         <name>fs.s3a.path.style.access</name>
-        <value>{{ .Values.s3aConfiguration.pathStyleAccess }}</value>
+        <value>{{ .Values.blobStorages.s3aConfiguration.pathStyleAccess }}</value>
       </property>
       <!-- End of of S3 like configuration -->
 

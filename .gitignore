@@ -1,0 +1,16 @@
+resources
+
+docker/image
+docker/push
+docker/push-latest
+docker/push-all
+docker/push-simplified
+
+metastore-site.template.xml
+metastore-site.*.xml
+*.jar
+
+values.yaml
+.vscode/
+*.log
+metastore_db

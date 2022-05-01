@@ -19,7 +19,7 @@ $(BASE)/hive-home: $(BASE)
 	wget -c $(HIVE_METASTORE_URL) -O $(BASE)/hive.tar.gz
 	mkdir -p resources/hive-output
 	tar -xzvf resources/hive.tar.gz -C resources/hive-output
-	mv resources/hive-output/apache-hive-metastore-$(HIVE_METASTORE_VERSION)-bin resources/hive-home
+	mv resources/hive-output/apache-hive-metastore-$(HIVE_METASTORE_VERSION)-bin $(BASE)/hive-home
 	rm -rf resources/hive-output $(BASE)/hive.tar.gz
 
 $(BASE)/hive-home/lib/postgresql-42.2.16.jar: $(BASE)/hive-home
@@ -32,7 +32,7 @@ $(BASE)/hadoop-home: $(BASE)
 	wget -c $(HADOOP_URL) -O resources/hadoop.tar.gz
 	mkdir -p resources/hadoop-output
 	tar -xzvf resources/hadoop.tar.gz -C resources/hadoop-output
-	mv resources/hadoop-output/hadoop-$(HADOOP_VERSION) resources/hadoop-home
+	mv resources/hadoop-output/hadoop-$(HADOOP_VERSION) $(BASE)/hadoop-home
 	rm -rf resources/hadoop-output resources/hadoop.tar.gz
 
 $(BASE)/setup-homes: $(BASE)/hive-home $(BASE)/hadoop-home $(BASE)/hive-home/lib/postgresql-42.2.16.jar
