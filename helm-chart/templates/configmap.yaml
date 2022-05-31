@@ -84,6 +84,22 @@ data:
       </property>
       <!-- End of of S3 like configuration -->
 
+      <!-- Start of GCS configutations -->
+      {{ if .Values.blobStorages.gcsConfiguration.projectId }}
+      <property>
+        <name>fs.gs.project.id</name>
+        <value>{{ .Values.blobStorages.gcsConfiguration.projectId }}</values>
+      </property>
+      {{ end }}
+
+      {{ if .Values.blobStorages.gcsConfiguration.base64KeyFile }}
+      <property>
+        <name>fs.gs.auth.service.account.json.keyfile</name>
+        <value>/var/gcp-secrets/gcp-service-account.json</value>
+      </property>
+      {{ end }}
+      <!-- End of GCS configurations -->
+
       {{- range $parameter := .Values.hiveConfigParameters }}
       <property>
         <name>{{ $parameter.key }}</name>

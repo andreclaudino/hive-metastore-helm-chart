@@ -40,11 +40,20 @@ spec:
               containerPort: 9083
               protocol: TCP
           volumeMounts:
+            {{ if .Values.blobStorages.gcsConfiguration.base64KeyFile }}
+            - name: gcp-secret
+              mountPath: /var/gcp-secrets/
+            {{ end }}
             - name: configuration-volume
               mountPath: /installation/hive-home/conf/
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       volumes:
+      {{ if .Values.blobStorages.gcsConfiguration.base64KeyFile }}
+      - name: gcp-secret
+        secret:
+          secretName: {{ .Release.Name }}-gcp-secret
+      {{ end }}
       - name: configuration-volume
         configMap:
           name: {{ .Release.Name }}-configurations
